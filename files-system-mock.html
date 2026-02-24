@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILES - Forward Information Library and Evidence System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f7fafc;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .top-bar h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .top-bar p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #718096;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .folder-tree {
+            list-style: none;
+        }
+
+        .folder-item {
+            padding: 10px 12px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .folder-item:hover {
+            background: #f7fafc;
+        }
+
+        .folder-item.active {
+            background: #ebf5fb;
+            color: #2874a6;
+            font-weight: 600;
+        }
+
+        .folder-icon {
+            font-size: 18px;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .breadcrumb {
+            padding: 20px 30px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .breadcrumb span {
+            cursor: pointer;
+        }
+
+        .breadcrumb span:hover {
+            color: #2874a6;
+        }
+
+        .breadcrumb .separator {
+            color: #cbd5e0;
+        }
+
+        .view-controls {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-controls select {
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .document-grid {
+            padding: 0 30px 30px 30px;
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 120px 150px 100px 80px;
+            gap: 20px;
+            padding: 15px 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #718096;
+            letter-spacing: 0.5px;
+        }
+
+        .document-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 120px 150px 100px 80px;
+            gap: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+
+        .document-row:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .doc-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .doc-icon {
+            font-size: 24px;
+        }
+
+        .doc-title {
+            font-size: 14px;
+        }
+
+        .doc-id {
+            font-size: 12px;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .doc-type {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #ebf5fb;
+            color: #2874a6;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .classification-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .classification-badge.unclassified {
+            background: #eafaf1;
+            color: #229954;
+        }
+
+        .classification-badge.cui {
+            background: #fadbd8;
+            color: #c0392b;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #eafaf1;
+            color: #229954;
+        }
+
+        .status-badge.obsolete {
+            background: #f5f5f5;
+            color: #999;
+        }
+
+        .doc-date {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #718096;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            color: #2874a6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #718096;
+        }
+
+        .empty-state svg {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .info-panel {
+            position: fixed;
+            right: 0;
+            top: 80px;
+            width: 350px;
+            height: calc(100vh - 80px);
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            padding: 30px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .info-panel.open {
+            transform: translateX(0);
+        }
+
+        .info-panel h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-section h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #718096;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-section p {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .grid-header, .document-row {
+                grid-template-columns: 2fr 1fr 100px 120px 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>
+            <h1>📁 FILES</h1>
+            <p>Forward Information Library and Evidence System</p>
+        </div>
+        <div class="user-info">
+            <div class="user-badge">🔐 Atlantys Royel - Quality Control Manager</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Repository Structure</h3>
+            <ul class="folder-tree">
+                <li class="folder-item active">
+                    <span class="folder-icon">📂</span>
+                    <span>All Documents</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">📋</span>
+                    <span>Templates</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">📘</span>
+                    <span>SOPs</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">📗</span>
+                    <span>Work Instructions</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">📝</span>
+                    <span>Forms & Checklists</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">🎓</span>
+                    <span>Training Materials</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">✅</span>
+                    <span>Audit Records</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">🔧</span>
+                    <span>CAPA Records</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">📦</span>
+                    <span>Archive</span>
+                </li>
+            </ul>
+
+            <h3 style="margin-top: 30px;">Quick Filters</h3>
+            <ul class="folder-tree">
+                <li class="folder-item">
+                    <span class="folder-icon">🟢</span>
+                    <span>Active Documents</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">🔴</span>
+                    <span>CUI Documents</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">⏰</span>
+                    <span>Recently Updated</span>
+                </li>
+                <li class="folder-item">
+                    <span class="folder-icon">⚠️</span>
+                    <span>Pending Review</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by Document ID, title, owner, or keyword...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="toolbar-actions">
+                    <button class="btn btn-secondary">⬇️ Export Register</button>
+                    <button class="btn btn-primary">📄 Request New Document</button>
+                </div>
+            </div>
+
+            <div class="breadcrumb">
+                <span>FILES</span>
+                <span class="separator">›</span>
+                <span>All Documents</span>
+            </div>
+
+            <div class="view-controls">
+                <div>
+                    <strong>Showing 12 documents</strong>
+                    <span style="color: #718096; margin-left: 10px;">Sort by: Modified Date</span>
+                </div>
+                <select>
+                    <option>View: Grid</option>
+                    <option>View: List</option>
+                    <option>View: Details</option>
+                </select>
+            </div>
+
+            <div class="document-grid">
+                <div class="grid-header">
+                    <div>Document Name</div>
+                    <div>Type</div>
+                    <div>Version</div>
+                    <div>Classification</div>
+                    <div>Status</div>
+                    <div>Modified</div>
+                </div>
+
+                <div class="document-row" onclick="showInfo('QC_QMS_1.0')">
+                    <div class="doc-name">
+                        <span class="doc-icon">📘</span>
+                        <div>
+                            <div class="doc-title">Quality Management System Manual</div>
+                            <div class="doc-id">QC_QMS_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Manual</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 23, 2026</div>
+                </div>
+
+                <div class="document-row" onclick="showInfo('QC_DCS_1.0')">
+                    <div class="doc-name">
+                        <span class="doc-icon">📘</span>
+                        <div>
+                            <div class="doc-title">Document Control System</div>
+                            <div class="doc-id">QC_DCS_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">SOP</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 23, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📗</span>
+                        <div>
+                            <div class="doc-title">SmartBeam Operations Procedure</div>
+                            <div class="doc-id">SB_OPS_1.2</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">SOP</div>
+                    <div><span class="version-badge">v1.2</span></div>
+                    <div><span class="classification-badge cui">CUI</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 20, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📗</span>
+                        <div>
+                            <div class="doc-title">Blaise Testing Protocol</div>
+                            <div class="doc-id">BL_TEST_2.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Work Instruction</div>
+                    <div><span class="version-badge">v2.0</span></div>
+                    <div><span class="classification-badge cui">CUI</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 15, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📝</span>
+                        <div>
+                            <div class="doc-title">Readiness Gate Checklist Template</div>
+                            <div class="doc-id">QC_RDY_FORM_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Form</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 18, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">🎓</span>
+                        <div>
+                            <div class="doc-title">Document Control System Training</div>
+                            <div class="doc-id">TRAIN_QC_DCS_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Training</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 23, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">🔧</span>
+                        <div>
+                            <div class="doc-title">CAPA-045: Documentation Gap Fix</div>
+                            <div class="doc-id">CAPA-045</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">CAPA Record</div>
+                    <div><span class="version-badge">—</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Closed</span></div>
+                    <div class="doc-date">Feb 20, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📗</span>
+                        <div>
+                            <div class="doc-title">Isidore Security Procedures</div>
+                            <div class="doc-id">IS_SEC_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">SOP</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge cui">CUI</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 12, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📘</span>
+                        <div>
+                            <div class="doc-title">External Compliance System</div>
+                            <div class="doc-id">QC_ECS_1.1</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">SOP</div>
+                    <div><span class="version-badge">v1.1</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 10, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📗</span>
+                        <div>
+                            <div class="doc-title">SmartBeam Operations Procedure</div>
+                            <div class="doc-id">SB_OPS_1.1</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">SOP</div>
+                    <div><span class="version-badge">v1.1</span></div>
+                    <div><span class="classification-badge cui">CUI</span></div>
+                    <div><span class="status-badge obsolete">Superseded</span></div>
+                    <div class="doc-date">Jan 15, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">✅</span>
+                        <div>
+                            <div class="doc-title">Q1 2026 Internal Audit Report</div>
+                            <div class="doc-id">AUDIT_2026_Q1</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Audit Record</div>
+                    <div><span class="version-badge">—</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Complete</span></div>
+                    <div class="doc-date">Jan 31, 2026</div>
+                </div>
+
+                <div class="document-row">
+                    <div class="doc-name">
+                        <span class="doc-icon">📝</span>
+                        <div>
+                            <div class="doc-title">CAPA Request Form Template</div>
+                            <div class="doc-id">FORM_CAPA_1.0</div>
+                        </div>
+                    </div>
+                    <div class="doc-type">Form</div>
+                    <div><span class="version-badge">v1.0</span></div>
+                    <div><span class="classification-badge unclassified">Unclassified</span></div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="doc-date">Feb 5, 2026</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+        <h3>Document Details</h3>
+        
+        <div class="info-section">
+            <h4>Document ID</h4>
+            <p>QC_QMS_1.0</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Full Title</h4>
+            <p>Quality Management System Manual</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Classification</h4>
+            <p><span class="classification-badge unclassified">Unclassified</span></p>
+        </div>
+
+        <div class="info-section">
+            <h4>Version</h4>
+            <p>v1.0 (Active)</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Effective Date</h4>
+            <p>February 23, 2026</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Prepared By</h4>
+            <p>Atlantys Royel, Quality Control Manager</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Approved By</h4>
+            <p>[President/CEO Name]</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Next Review Date</h4>
+            <p>February 23, 2027</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Location</h4>
+            <p>/Quality-System/QC_QMS_1.0</p>
+        </div>
+
+        <div class="info-section">
+            <h4>Related Documents</h4>
+            <p>QC_DCS_1.0, QC_ECS_1.0, QC_CTS_1.0</p>
+        </div>
+
+        <div class="info-section" style="margin-top: 30px;">
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">📥 Download</button>
+            <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;">📋 View Version History</button>
+            <button class="btn btn-secondary" style="width: 100%;">📝 Request Change (DCR)</button>
+        </div>
+    </div>
+
+    <script>
+        function showInfo(docId) {
+            document.getElementById('infoPanel').classList.add('open');
+        }
+
+        // Close panel when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('infoPanel');
+            if (!e.target.closest('.document-row') && !e.target.closest('.info-panel')) {
+                panel.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
