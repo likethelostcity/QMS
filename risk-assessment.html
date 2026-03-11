@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isidore Quantum® — Business & Compliance Risk Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f5;
+    --card: #ffffff;
+    --hover: #fafafa;
+    --border: #e5e5e5;
+    --border-lt: #efefef;
+    --t1: #1a1a1a;
+    --t2: #4a4a4a;
+    --tm: #8a8a8a;
+    --td: #b0b0b0;
+    --critical: #b91c1c;
+    --critical-bg: #fef2f2;
+    --critical-border: #fca5a5;
+    --high: #92400e;
+    --high-bg: #fffbeb;
+    --high-border: #fcd34d;
+    --med: #6b5e0a;
+    --med-bg: #fefce8;
+    --med-border: #e5e08a;
+    --blue: #1e5a8a;
+    --blue-bg: #eff6ff;
+    --blue-border: #93c5fd;
+    --green: #166534;
+    --green-bg: #f0fdf4;
+    --green-border: #86efac;
+    --purple: #5b21b6;
+    --purple-bg: #f5f0ff;
+    --purple-border: #c4b0e8;
+    --header-bg: #2d3142;
+    --accent: #2e5e8c;
+    --font: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { background:var(--bg); color:var(--t1); font-family:var(--font); -webkit-font-smoothing:antialiased; }
+  body { min-height:100vh; }
+  .wrap { max-width:1060px; margin:0 auto; padding:44px 28px 64px; }
+
+  /* Header */
+  .eyebrow { font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:0.16em; color:var(--tm); text-transform:uppercase; margin-bottom:8px; }
+  h1 { font-size:30px; font-weight:800; color:var(--t1); letter-spacing:-0.03em; line-height:1.2; }
+  .sub { font-size:14px; color:var(--tm); margin-top:6px; line-height:1.6; max-width:800px; }
+
+  /* Overall rating banner */
+  .rating-banner {
+    margin:32px 0 28px;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:700px){ .rating-banner{grid-template-columns:1fr;} }
+  .rb {
+    padding:24px 22px;
+    border-radius:12px;
+    border:1px solid;
+    text-align:center;
+  }
+  .rb-label { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px; }
+  .rb-value { font-size:32px; font-weight:800; line-height:1; }
+  .rb-note { font-size:11px; margin-top:6px; }
+
+  /* Section headers */
+  .sec-head {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:20px 0 12px;
+    border-bottom:2px solid var(--t1);
+    margin-bottom:16px;
+    margin-top:36px;
+    cursor:default;
+  }
+  .sec-num {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:32px; height:32px;
+    border-radius:50%;
+    font-family:var(--mono);
+    font-size:14px;
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .sec-title { font-size:20px; font-weight:700; color:var(--t1); }
+  .sec-count { font-family:var(--mono); font-size:11px; font-weight:600; margin-left:auto; }
+
+  /* Risk cards */
+  .risk-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid;
+    border-radius:0 10px 10px 0;
+    margin-bottom:10px;
+    overflow:hidden;
+    transition:box-shadow 0.15s;
+  }
+  .risk-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.06); }
+  .rc-header {
+    padding:16px 22px;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    cursor:pointer;
+    transition:background 0.1s;
+  }
+  .rc-header:hover { background:var(--hover); }
+  .rc-id {
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:700;
+    flex-shrink:0;
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .rc-finding { font-size:14px; font-weight:500; color:var(--t2); line-height:1.5; flex:1; }
+  .rc-sev {
+    font-family:var(--mono);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    padding:4px 12px;
+    border-radius:6px;
+    flex-shrink:0;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .rc-toggle { font-size:16px; color:var(--td); flex-shrink:0; width:20px; text-align:center; margin-top:2px; }
+
+  .rc-detail {
+    padding:0 22px 18px 72px;
+    background:var(--hover);
+    animation:fadeIn 0.15s ease;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media(max-width:600px){ .rc-detail{grid-template-columns:1fr;} }
+  .rc-box {
+    padding:14px 16px;
+    border-radius:8px;
+    border:1px solid var(--border-lt);
+    background:var(--card);
+  }
+  .rc-box-label { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+  .rc-box-text { font-size:13px; color:var(--t2); line-height:1.55; }
+
+  /* ISO table */
+  .iso-grid {
+    display:grid;
+    gap:8px;
+    margin-top:12px;
+  }
+  .iso-row {
+    display:grid;
+    grid-template-columns:90px 1fr 1fr;
+    gap:0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  @media(max-width:600px){ .iso-row{grid-template-columns:1fr;} }
+  .iso-clause {
+    padding:14px 16px;
+    background:var(--blue-bg);
+    border-right:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:700;
+    color:var(--blue);
+  }
+  .iso-req { padding:14px 16px; font-size:13px; color:var(--t2); line-height:1.5; border-right:1px solid var(--border); }
+  .iso-state { padding:14px 16px; font-size:13px; color:var(--critical); line-height:1.5; background:var(--critical-bg); }
+
+  /* Security section */
+  .sec-alert {
+    background:var(--critical-bg);
+    border:1px solid var(--critical-border);
+    border-radius:12px;
+    padding:24px 26px;
+    margin:16px 0;
+  }
+  .sec-alert-title { font-size:16px; font-weight:700; color:var(--critical); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .sec-alert-text { font-size:13.5px; color:#7f1d1d; line-height:1.6; }
+  .sec-bullet { padding:4px 0 4px 20px; position:relative; font-size:13.5px; color:#7f1d1d; line-height:1.6; }
+  .sec-bullet::before { content:"\2022"; position:absolute; left:4px; color:var(--critical); font-weight:700; }
+
+  /* Recommendation */
+  .rec-card {
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+    border-radius:12px;
+    padding:24px 26px;
+    margin:16px 0;
+  }
+  .rec-title { font-size:16px; font-weight:700; color:var(--green); margin-bottom:10px; }
+  .rec-track {
+    margin:12px 0;
+    padding:16px 20px;
+    background:var(--card);
+    border:1px solid var(--green-border);
+    border-radius:8px;
+  }
+  .rec-track-label { font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+  .rec-track-text { font-size:13.5px; color:var(--t2); line-height:1.55; }
+
+  /* Nav */
+  .nav { display:flex; gap:6px; margin:28px 0 8px; flex-wrap:wrap; position:sticky; top:0; z-index:10; background:var(--bg); padding:10px 0; border-bottom:1px solid var(--border); }
+  .nav-btn { padding:8px 18px; font-family:var(--font); font-size:12px; font-weight:600; background:var(--card); border:1px solid var(--border); color:var(--tm); border-radius:8px; cursor:pointer; transition:all 0.15s; user-select:none; }
+  .nav-btn:hover { border-color:#ccc; color:var(--t2); }
+  .nav-btn.active { font-weight:700; }
+
+  .footer { margin-top:40px; font-family:var(--mono); font-size:10px; color:var(--td); text-align:center; letter-spacing:0.05em; padding-top:20px; border-top:1px solid var(--border); }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+  @media print {
+    .nav { display:none; }
+    .risk-card, .iso-row, .sec-alert, .rec-card { break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const RISKS = {
+  critical: [
+    { id:"C1", finding:"Zero software documentation exists across the entire product. No SRS, no SAD, no ICD, no SW test plans, no build records, no release SOP, no version control procedure.",
+      risk:"ISO 9001 Clause 8.3 (Design & Development) cannot be satisfied for the software portion of the product. SW changes are untraceable. If a security incident occurs, FEAI cannot demonstrate what software was running on any unit at any point in time.",
+      impact:"Certification blocker. Contract liability for defense customers. Unauditable product." },
+    { id:"C2", finding:"Default credentials (pfed / !QAZ1qaz) hardcoded in firmware programming instructions. No secure boot. Unencrypted SD card images can be cloned with a $30 card reader and Balena Etcher.",
+      risk:"Any person with basic IT knowledge and physical access can extract, clone, or replace the boot media. For a defense encryption (COMSEC) product, this is a fundamental security architecture failure. FIPS 140-3 certification is not achievable without tamper evidence and secure boot.",
+      impact:"COMSEC/ITAR violation risk. Product credibility. Investor due diligence failure." },
+    { id:"C3", finding:"No documentation has undergone the required two-person review. Elena confirmed in the leadership call that review-by-two was not completed on any aggregated documents.",
+      risk:"ISO 9001 Clause 7.5 requires documented information to be reviewed for adequacy and approved before use. Every document FEAI has produced fails this requirement. The QMS cannot claim operational compliance if the review process exists on paper but is never executed.",
+      impact:"Systemic QMS failure. Every existing document is technically unapproved." },
+    { id:"C4", finding:"No pre-shipment or pre-demonstration functional verification logs exist. Products are being demonstrated to customers without documented proof each unit was tested beforehand.",
+      risk:"If a unit fails during a customer demo or PoC engagement, FEAI cannot prove it was tested before shipment. For government/defense customers, this is a contract compliance failure. Exposes FEAI to warranty and liability claims with no defensible quality record.",
+      impact:"Customer confidence. Contract compliance. Liability exposure." },
+    { id:"C5", finding:"No product storage environment specification. No evidence of temperature or humidity-controlled storage. No environmental monitoring logs. No calibration records.",
+      risk:"ISO 9001 Clause 8.5.4 (Preservation) requires the organization to preserve product conformity during processing and delivery. Uncontrolled storage causes corrosion, ESD damage, moisture absorption in PCBs, and solder joint degradation. FEAI cannot demonstrate units were stored within specification.",
+      impact:"Product reliability. Silent field failures. ISO 8.5.4 nonconformance." }
+  ],
+  high: [
+    { id:"H1", finding:"No customer satisfaction measurement or complaint tracking. No feedback forms, no analysis reports, no mechanism to determine if the product works for the customer after delivery.",
+      risk:"ISO 9001 Clause 9.1.2 explicitly requires monitoring customer perception. This is mandatory\u2014not optional. A registrar will issue a major nonconformance.",
+      impact:"ISO major NC. No voice-of-customer data for product improvement." },
+    { id:"H2", finding:"No Requirements Traceability Matrix (RTM) exists at any stage. Design inputs cannot be traced to design outputs or verification evidence.",
+      risk:"ISO 8.3.5 and 8.3.6 require design outputs traceable to inputs and validation confirming the product meets requirements. Without an RTM, FEAI cannot demonstrate this chain for any requirement.",
+      impact:"Design verification gap. Cannot prove requirements were met." },
+    { id:"H3", finding:"No Design Input Record (DIR) exists. Requirements are informal and scattered across emails and chats.",
+      risk:"ISO 8.3.3 requires documented design inputs. Without a DIR, the design baseline is undefined\u2014nothing to trace to, test against, or verify.",
+      impact:"No design baseline. PDR gate cannot be formally completed." },
+    { id:"H4", finding:"Hardware engineering meetings held without documented notes or decision records. Elena confirmed no records exist from hardware-only meetings.",
+      risk:"Engineering decisions affecting product design, safety, and compliance have no documented record. If questioned by a customer, registrar, or in litigation, FEAI has no evidence of rationale, participants, or alternatives considered.",
+      impact:"Untraceable engineering decisions. Audit exposure." },
+    { id:"H5", finding:"No ECN, NCR, or phase entry checklist templates exist. The PCB SOP defines these processes in detail but the fillable artifacts have not been created.",
+      risk:"The SOP is governance\u2014it tells people what to do. Without templates, the process cannot be executed. The phase-gate model exists on paper but cannot be operationalized.",
+      impact:"Process exists on paper only. Cannot be executed or audited." },
+    { id:"H6", finding:"No unit serialization, inventory tracking, or firmware/SW version-per-unit log. Cannot determine which units exist, where they are, what firmware they run, or their status.",
+      risk:"For a defense product under ITAR and CMMC, inability to track individual units and configurations is a compliance failure. Cannot identify affected population for a recall.",
+      impact:"ITAR/CMMC exposure. Cannot execute a recall. No asset accountability." },
+    { id:"H7", finding:"PoC SOP references 7 templates (Kickoff PPT, Questionnaire, Objectives, Risk Registry, Agreement, Travel Kit, Exit Brief) that do not exist.",
+      risk:"The customer-facing execution process is unexecutable. Every PoC engagement runs ad hoc. The SOP creates a false sense of process maturity.",
+      impact:"Customer-facing process is unexecutable. PoC quality is inconsistent." }
+  ],
+  medium: [
+    { id:"M1", finding:"No document retrieval or self-service access procedure. CEO interrupted during investor pitch because a team member could not locate required files.",
+      risk:"When critical files can\u2019t be located without escalating to the CEO, it signals a CM access problem and a single-point-of-failure in institutional knowledge.",
+      impact:"Leadership distraction. Fundraising disruption. Operational bottleneck." },
+    { id:"M2", finding:"No warranty policy, RMA procedure, or field failure analysis process.",
+      risk:"As FEAI moves from PoC to production, the absence of a warranty/return process creates unmanaged liability and no mechanism to learn from field failures.",
+      impact:"Unmanaged liability. No corrective action loop from the field." },
+    { id:"M3", finding:"Deployment lead has no backup or handoff coverage. Flagged in leadership call that things fall apart when she travels.",
+      risk:"Single-point-of-failure in a customer-facing role. Deployment engagements stall when the lead is unavailable.",
+      impact:"Operational resilience. Customer delivery continuity." },
+    { id:"M4", finding:"FPLC, SOP-HW-FNC-001, and Altium365 VC SOP are referenced in existing SOPs but not provided or confirmed to exist.",
+      risk:"Existing SOPs reference upstream governance documents that may not exist. The SOP hierarchy may be built on references that lead nowhere.",
+      impact:"Governance chain integrity. Audit trail gaps." }
+  ]
+};
+
+const ISO = [
+  { clause:"7.5", req:"Documented Information Control", state:"No documents have completed two-person review. No approval records. Document control exists in SOP but is not executed." },
+  { clause:"8.3.3", req:"Design Inputs", state:"No Design Input Record (DIR) exists for Isidore. Requirements are informal and scattered." },
+  { clause:"8.3.5", req:"Design Outputs", state:"No RTM exists. Design outputs cannot be traced to design inputs." },
+  { clause:"8.3.6", req:"Design Validation", state:"No Acceptance Test Report. No customer sign-off. No validation evidence." },
+  { clause:"8.5.4", req:"Preservation", state:"No storage environment spec. No monitoring. No evidence of controlled conditions." },
+  { clause:"8.6", req:"Release of Products", state:"No formal release procedure. No release notes. No gate review. No vault lock." },
+  { clause:"9.1.2", req:"Customer Satisfaction", state:"No customer satisfaction measurement. No complaint tracking." },
+  { clause:"10.2", req:"Nonconformity / CAPA", state:"NCR template does not exist. No corrective action records. No root cause analysis history." }
+];
+
+const SEV_STYLE = {
+  critical: { color:"#b91c1c", bg:"#fef2f2", border:"#fca5a5", label:"CRITICAL" },
+  high: { color:"#92400e", bg:"#fffbeb", border:"#fcd34d", label:"HIGH" },
+  medium: { color:"#6b5e0a", bg:"#fefce8", border:"#e5e08a", label:"MEDIUM" }
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let openRisk = null;
+let activeSection = "overview";
+
+function render() {
+  let h = "";
+
+  // Header
+  h += '<div class="eyebrow">Forward Edge-AI &nbsp;\u00b7&nbsp; Isidore Quantum\u00ae &nbsp;\u00b7&nbsp; QC Assessment</div>';
+  h += '<h1>Business & Compliance Risk Assessment</h1>';
+  h += '<p class="sub">Product lifecycle documentation gap analysis. Sourced from 5 existing documents, inferred software/storage/post-delivery requirements, and leadership call transcript. Prepared for executive review.</p>';
+
+  // Rating banner
+  h += '<div class="rating-banner">';
+  h += '<div class="rb" style="background:#fef2f2;border-color:#fca5a5"><div class="rb-label" style="color:#b91c1c">Overall Risk Rating</div><div class="rb-value" style="color:#991b1b">CRITICAL</div><div class="rb-note" style="color:#b91c1c">5 critical \u00b7 7 high \u00b7 4 medium</div></div>';
+  h += '<div class="rb" style="background:#eff6ff;border-color:#93c5fd"><div class="rb-label" style="color:#1e5a8a">Documentation Coverage</div><div class="rb-value" style="color:#1e5a8a">\u223c4%</div><div class="rb-note" style="color:#1e5a8a">5 of ~130 required documents exist</div></div>';
+  h += '<div class="rb" style="background:#f5f0ff;border-color:#c4b0e8"><div class="rb-label" style="color:#5b21b6">Software Documentation</div><div class="rb-value" style="color:#5b21b6">0%</div><div class="rb-note" style="color:#5b21b6">Entire SW lifecycle undocumented</div></div>';
+  h += '</div>';
+
+  // Nav
+  h += '<div class="nav">';
+  ["overview","security","iso","business","recommendation"].forEach(s => {
+    const labels = {overview:"Risk Register",security:"Security Exposure",iso:"ISO Impact",business:"Business Risk",recommendation:"Recommendation"};
+    const colors = {overview:"var(--critical)",security:"#b91c1c",iso:"var(--blue)",business:"var(--t2)",recommendation:"var(--green)"};
+    h += '<button class="nav-btn'+(activeSection===s?' active':'')+'" style="'+(activeSection===s?'border-color:'+colors[s]+';color:'+colors[s]:'') +'" onclick="setSection(\''+s+'\')">'+labels[s]+'</button>';
+  });
+  h += '</div>';
+
+  // ══════════ RISK REGISTER ══════════
+  if (activeSection === "overview") {
+    ["critical","high","medium"].forEach(sev => {
+      const sty = SEV_STYLE[sev];
+      const risks = RISKS[sev];
+      h += '<div class="sec-head"><div class="sec-num" style="background:'+sty.bg+';color:'+sty.color+';border:2px solid '+sty.border+'">'+risks.length+'</div>';
+      h += '<div class="sec-title">'+sty.label+' Risks</div>';
+      h += '<div class="sec-count" style="color:'+sty.color+'">'+risks.length+' finding'+(risks.length>1?"s":"")+'</div></div>';
+
+      risks.forEach(r => {
+        const isOpen = openRisk === r.id;
+        h += '<div class="risk-card" style="border-left-color:'+sty.color+'">';
+        h += '<div class="rc-header" onclick="toggleRisk(\''+r.id+'\')">';
+        h += '<div class="rc-id" style="background:'+sty.bg+';color:'+sty.color+'">'+r.id+'</div>';
+        h += '<div class="rc-finding">'+r.finding+'</div>';
+        h += '<div class="rc-sev" style="background:'+sty.bg+';color:'+sty.color+';border:1px solid '+sty.border+'">'+sty.label+'</div>';
+        h += '<div class="rc-toggle">'+(isOpen?'\u2212':'+')+'</div>';
+        h += '</div>';
+        if (isOpen) {
+          h += '<div class="rc-detail">';
+          h += '<div class="rc-box"><div class="rc-box-label" style="color:'+sty.color+'">Risk Exposure</div><div class="rc-box-text">'+r.risk+'</div></div>';
+          h += '<div class="rc-box"><div class="rc-box-label" style="color:'+sty.color+'">Business Impact</div><div class="rc-box-text">'+r.impact+'</div></div>';
+          h += '</div>';
+        }
+        h += '</div>';
+      });
+    });
+  }
+
+  // ══════════ SECURITY ══════════
+  if (activeSection === "security") {
+    h += '<div class="sec-head"><div class="sec-num" style="background:#fef2f2;color:#b91c1c;border:2px solid #fca5a5">\u26a0</div><div class="sec-title">Security Architecture Exposure</div></div>';
+
+    h += '<p style="font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:20px">The firmware programming instructions\u2014the only procedural document that exists for Isidore\u2019s software/firmware layer\u2014reveal security architecture concerns that are not documentation gaps. They are product design exposures that documentation alone cannot fix.</p>';
+
+    h += '<div class="sec-alert"><div class="sec-alert-title">\u26d4 Physical Access Vulnerability</div>';
+    h += '<div class="sec-alert-text" style="margin-bottom:12px">The Isidore board uses SD cards as the boot medium for all three processors (Front-End, Outer, Inner). These SD cards are created using Balena Etcher, a free consumer tool. The images are not encrypted. Any individual with physical access and a standard SD card reader can:</div>';
+    ["Extract the full boot image from any processor","Clone the SD card to create an identical copy of the system","Modify the boot image and reinsert it into the device","Flash a completely different image onto the processor","Read the QSPI flash contents using the documented REVELPROG-IS programmer and a standard USB connection"].forEach(t => {
+      h += '<div class="sec-bullet">'+t+'</div>';
+    });
+    h += '<div class="sec-alert-text" style="margin-top:14px">For a commercial consumer product, this might be acceptable. For a defense-grade encryption product whose entire value proposition is secure communications, this is a fundamental architecture problem.</div>';
+    h += '</div>';
+
+    h += '<div class="sec-alert"><div class="sec-alert-title">\u26d4 Hardcoded Default Credentials</div>';
+    h += '<div class="sec-alert-text">The firmware programming instructions contain the default Linux login credentials in plaintext: <strong>username pfed</strong>, <strong>password !QAZ1qaz</strong>. There is no documented procedure for changing these credentials after provisioning, no procedure for unique-per-unit credential generation, and no indication they are changed before units ship to customers. The password follows a predictable keyboard-walk pattern and would be trivially discoverable.</div>';
+    h += '</div>';
+
+    h += '<div class="sec-alert" style="background:#eff6ff;border-color:#93c5fd"><div class="sec-alert-title" style="color:#1e5a8a">\u2139 Implications for Certification & Contracting</div>';
+    h += '<div class="sec-alert-text" style="color:#1e3a5f">FIPS 140-3 requires tamper evidence, secure key storage, and authentication mechanisms that prevent unauthorized access. The current architecture\u2014removable, unencrypted boot media with hardcoded credentials\u2014is structurally incompatible with these requirements. Any customer RFP or contract referencing FIPS 140-3, CNSA suite compliance, or COMSEC requirements will require physical and logical access controls that do not currently exist in the product.</div>';
+    h += '<div class="sec-alert-text" style="color:#1e3a5f;margin-top:10px;font-weight:600">This is not a documentation gap. This is a product engineering gap that must be resolved in hardware and software before certification is achievable.</div>';
+    h += '</div>';
+  }
+
+  // ══════════ ISO ══════════
+  if (activeSection === "iso") {
+    h += '<div class="sec-head"><div class="sec-num" style="background:#eff6ff;color:#1e5a8a;border:2px solid #93c5fd">8</div><div class="sec-title">ISO 9001:2015 Clause Nonconformances</div></div>';
+
+    h += '<p style="font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:8px">FEAI has attempted ISO 9001 certification three times and failed. Based on this assessment, the reasons for prior failures are structurally predictable. The following clauses have confirmed nonconformances based on the current state of the Isidore product lifecycle.</p>';
+    h += '<p style="font-size:13px;color:var(--tm);line-height:1.55;margin-bottom:20px">A registrar assesses the QMS as a system. The pattern below is not a list of isolated findings\u2014it is evidence of a QMS that has not been operationalized. The SOPs that exist are well-structured and technically sound, but they are governance documents without executed records. An ISO auditor will not credit a process that has no evidence of execution.</p>';
+
+    h += '<div class="iso-grid">';
+    // Header
+    h += '<div class="iso-row" style="font-weight:700">';
+    h += '<div class="iso-clause" style="background:#2d3142;color:#fff;font-size:11px">CLAUSE</div>';
+    h += '<div class="iso-req" style="background:#2d3142;color:#fff;font-size:12px;font-weight:700">REQUIREMENT</div>';
+    h += '<div class="iso-state" style="background:#2d3142;color:#fff;font-size:12px;font-weight:700">CURRENT STATE</div>';
+    h += '</div>';
+    ISO.forEach(r => {
+      h += '<div class="iso-row">';
+      h += '<div class="iso-clause">'+r.clause+'</div>';
+      h += '<div class="iso-req">'+r.req+'</div>';
+      h += '<div class="iso-state">'+r.state+'</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  // ══════════ BUSINESS ══════════
+  if (activeSection === "business") {
+    h += '<div class="sec-head"><div class="sec-num" style="background:var(--bg);color:var(--t2);border:2px solid var(--border)">\u2691</div><div class="sec-title">Business & Strategic Risk</div></div>';
+
+    const biz = [
+      { title:"Investor Due Diligence", text:"FEAI is actively fundraising. Institutional and defense-sector investors will conduct technical due diligence. The current documentation state cannot survive scrutiny. A defense-focused investor will ask for evidence of configuration management, quality records, and ITAR compliance. FEAI cannot produce any of these for the software portion of the product, and the hardware records are incomplete and unapproved. The CEO was already disrupted during an investor pitch by an internal file-access failure\u2014this is a symptom of the same underlying problem.", color:"var(--critical)", bg:"var(--critical-bg)", border:"var(--critical-border)" },
+      { title:"Contract Enforceability", text:"Government and defense contracts (FAR/DFARS) require the contractor to maintain a quality management system and produce evidence of compliance upon request. FEAI\u2019s current state creates risk in two directions: inability to win new contracts that require QMS evidence as a prerequisite, and inability to defend existing deliverables if a customer challenges quality or compliance.", color:"var(--high)", bg:"var(--high-bg)", border:"var(--high-border)" },
+      { title:"Product Liability", text:"Isidore is an encryption product. If a deployed unit fails in a security-critical environment and FEAI cannot produce testing records, environmental storage logs, or firmware traceability for that specific unit, the liability exposure is significant. The absence of unit-level serialization and version tracking means FEAI cannot even identify which units are affected if a vulnerability is discovered.", color:"var(--critical)", bg:"var(--critical-bg)", border:"var(--critical-border)" },
+      { title:"Competitive Positioning", text:"Defense procurement increasingly requires demonstrated QMS maturity as a gate to compete. Without ISO 9001 certification and CMMC readiness, FEAI is excluded from contract vehicles that competitors with certified quality systems can access. Each failed certification attempt is visible to the market and erodes credibility with primes and integrators.", color:"var(--high)", bg:"var(--high-bg)", border:"var(--high-border)" }
+    ];
+
+    biz.forEach(b => {
+      h += '<div style="background:'+b.bg+';border:1px solid '+b.border+';border-radius:12px;padding:22px 24px;margin:12px 0">';
+      h += '<div style="font-size:16px;font-weight:700;color:'+b.color+';margin-bottom:8px">'+b.title+'</div>';
+      h += '<div style="font-size:13.5px;color:var(--t2);line-height:1.6">'+b.text+'</div>';
+      h += '</div>';
+    });
+  }
+
+  // ══════════ RECOMMENDATION ══════════
+  if (activeSection === "recommendation") {
+    h += '<div class="sec-head"><div class="sec-num" style="background:#f0fdf4;color:#166534;border:2px solid #86efac">\u2713</div><div class="sec-title">Recommendation</div></div>';
+
+    h += '<p style="font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:16px">The gap between where FEAI is and where it needs to be is large but structurally addressable. The existing SOPs\u2014particularly the PCB Hardware Development SOP and the Hardware Document Control SOP\u2014are well-architected governance documents. The problem is not the absence of process design; it is the absence of process execution and the complete absence of software-side governance.</p>';
+
+    h += '<div class="rec-card">';
+    h += '<div class="rec-title">Three-Track Remediation Path</div>';
+
+    const tracks = [
+      { label:"IMMEDIATE", color:"#b91c1c", title:"Address the 5 Critical Risks (C1\u2013C5)", text:"The security architecture findings (C2) require engineering action, not just documentation. Default credentials must be eliminated, secure boot must be implemented, and SD card images must be encrypted or replaced with a non-removable boot mechanism. The remaining critical risks require template creation, process activation, and evidence generation. Target: 30\u201360 days." },
+      { label:"NEAR-TERM", color:"#5b21b6", title:"Build the Software Development Lifecycle", text:"This is the largest single gap. A Software Requirements Specification (SRS), Software Architecture Document (SAD), Interface Control Document (ICD), SW test plan, build SOP, release SOP, and configuration management plan must be created for the software portion of the product. This work must happen in parallel with hardware documentation remediation. Target: 60\u201390 days." },
+      { label:"CERTIFICATION", color:"#1e5a8a", title:"Execute the ISO 9001 Compliance Roadmap", text:"Use the existing 8-step process lifecycle (Process Identified \u2192 Feedback Loops Active) from the ISO Compliance Roadmap as the structure. This risk assessment and the product lifecycle process map provide the specific gaps that must be closed at each step. The roadmap\u2019s project-by-project progress tracker (Isidore at Step 2, Corporate QMS at Step 3) should be updated to reflect the true state revealed by this assessment. Target: Q3 2026 Documentation Complete \u2192 Q4 2026 Implementation Complete \u2192 Q1 2027 Internal Audit Ready." }
+    ];
+
+    tracks.forEach(t => {
+      h += '<div class="rec-track"><div class="rec-track-label" style="color:'+t.color+'">'+t.label+'</div><div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px">'+t.title+'</div><div class="rec-track-text">'+t.text+'</div></div>';
+    });
+
+    h += '</div>';
+
+    h += '<p style="font-size:14px;color:var(--t2);line-height:1.65;margin-top:16px">This assessment should be reviewed with the CEO, CTO, and program leadership. The findings are not indictments of individual performance\u2014they are the predictable consequence of rapid product development without parallel quality infrastructure. The corrective path is clear, but it requires sustained investment and executive commitment.</p>';
+  }
+
+  h += '<div class="footer">Forward Edge-AI, Inc. \u00b7 Internal \u2014 Controlled \u00b7 Isidore Quantum\u00ae Risk Assessment \u00b7 '+new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})+'</div>';
+
+  document.getElementById("app").innerHTML = h;
+}
+
+function toggleRisk(id) { openRisk = openRisk === id ? null : id; render(); }
+function setSection(s) { activeSection = s; openRisk = null; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+
+render();
+</script>
+</body>
+</html>
