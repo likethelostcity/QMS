@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isidore Quantum® — Full Product Lifecycle Process Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f5;
+    --bg-card: #ffffff;
+    --bg-hover: #fafafa;
+    --bg-expanded: #f9fafb;
+    --border: #e5e5e5;
+    --border-light: #efefef;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #8a8a8a;
+    --text-dim: #b0b0b0;
+    --green: #2e9e6b;
+    --green-bg: #e8f5ee;
+    --green-border: #a3d9bc;
+    --blue: #4a90d9;
+    --blue-bg: #e8f0fa;
+    --blue-border: #a3c4e8;
+    --red: #c0392b;
+    --red-bg: #fce8e6;
+    --red-border: #f0aba4;
+    --amber: #d4880f;
+    --amber-bg: #fef5e0;
+    --amber-border: #f0d48a;
+    --purple: #7c5cbf;
+    --purple-bg: #f0ebfa;
+    --purple-border: #c4b0e8;
+    --teal: #1a8a7a;
+    --teal-bg: #e0f5f2;
+    --teal-border: #8ad4ca;
+    --font: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: var(--bg); color: var(--text-primary); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; }
+  .container { max-width: 1060px; margin: 0 auto; padding: 44px 28px 64px; }
+
+  .header-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+  h1 { font-size: 28px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.25; }
+  .subtitle { font-size: 14px; color: var(--text-muted); margin-top: 6px; line-height: 1.55; max-width: 780px; }
+
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 32px 0 28px; }
+  @media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat-card { padding: 16px 18px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+  .stat-label { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-dim); margin-bottom: 5px; text-transform: uppercase; }
+  .stat-value { font-size: 28px; font-weight: 700; line-height: 1; }
+
+  .controls { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .ctrl-btn { padding: 8px 16px; font-family: var(--font); font-size: 12px; font-weight: 600; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .ctrl-btn:hover { border-color: #ccc; color: var(--text-secondary); }
+  .ctrl-btn.a-blue { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue); }
+  .ctrl-btn.a-red { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+  .ctrl-btn.a-amber { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
+
+  .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 20px; display: none; animation: fadeIn 0.2s ease; }
+  .panel.amber { background: var(--amber-bg); border-color: var(--amber-border); }
+  .panel.open { display: block; }
+  .panel-title { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; margin-bottom: 14px; text-transform: uppercase; }
+  .panel-title.blue { color: var(--blue); }
+  .panel-title.amber { color: var(--amber); }
+
+  .t-item { padding: 8px 0; border-bottom: 1px solid #f0d48a40; display: flex; gap: 10px; align-items: flex-start; }
+  .t-item:last-child { border-bottom: none; }
+  .t-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .t-text { font-size: 13px; color: #7a5a00; line-height: 1.5; }
+  .t-text strong { font-weight: 600; }
+
+  .cc-row { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-light); }
+  .cc-row:last-child { border-bottom: none; }
+  .cc-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .cc-note { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .phase-nav { display: flex; gap: 3px; margin-bottom: 10px; }
+  @media (max-width: 700px) { .phase-nav { flex-wrap: wrap; } }
+  .ptab { flex: 1; min-width: 0; padding: 12px 4px 10px; text-align: center; background: var(--bg-card); border: 1px solid var(--border); border-bottom: 3px solid transparent; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .ptab:first-child { border-radius: 10px 0 0 10px; }
+  .ptab:last-child { border-radius: 0 10px 10px 0; }
+  .ptab:hover { background: var(--bg-hover); }
+  .ptab .tn { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-family: var(--mono); font-size: 12px; font-weight: 700; margin-bottom: 4px; transition: all 0.15s; }
+  .ptab .tl { font-size: 10px; font-weight: 600; color: var(--text-muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ptab .tg { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--red); margin-top: 3px; }
+  .ptab.active .tl { color: var(--text-primary); font-weight: 700; }
+
+  .pcard { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; animation: fadeIn 0.2s ease; }
+  .ph { padding: 18px 22px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.12s; }
+  .ph:hover { background: var(--bg-hover); }
+  .pnum { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; font-family: var(--mono); font-size: 15px; font-weight: 700; flex-shrink: 0; }
+  .ptitle { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-left: 14px; }
+  .psub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .pchev { font-size: 16px; color: var(--text-dim); flex-shrink: 0; }
+
+  .sr { border-bottom: 1px solid var(--border-light); }
+  .sr:last-child { border-bottom: none; }
+  .sh { padding: 12px 22px 12px 48px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.1s; }
+  .sh:hover { background: var(--bg-hover); }
+  .sn { font-family: var(--mono); font-size: 11px; color: var(--text-dim); width: 28px; flex-shrink: 0; }
+  .sl { font-size: 13.5px; font-weight: 500; color: var(--text-secondary); }
+  .sm { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .sc { font-family: var(--mono); font-size: 10px; font-weight: 600; }
+  .st { font-size: 14px; color: var(--text-dim); width: 18px; text-align: center; }
+
+  .sd { padding: 2px 22px 16px 76px; background: var(--bg-expanded); animation: fadeIn 0.15s ease; }
+  .sdesc { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 10px; }
+  .dr { display: flex; align-items: center; gap: 10px; padding: 4px 0; flex-wrap: wrap; }
+
+  .badge { display: inline-block; padding: 2px 9px; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.06em; border-radius: 4px; flex-shrink: 0; line-height: 1.7; text-transform: uppercase; }
+  .b-e { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green); }
+  .b-m { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+  .b-r { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber); }
+  .b-i { background: var(--purple-bg); border: 1px solid var(--purple-border); color: var(--purple); }
+  .b-iso { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--blue); font-size: 8.5px; padding: 1px 7px; margin-left: 2px; }
+  .b-call { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber); font-size: 8.5px; padding: 1px 7px; margin-left: 2px; }
+  .dn { font-size: 12.5px; color: var(--text-secondary); }
+
+  .cov { margin-top: 28px; padding: 18px 22px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+  .cov-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 10px; text-transform: uppercase; }
+  .cov-track { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: #e8e8e8; }
+  .cov-g { background: linear-gradient(90deg, #2e9e6b, #5ec492); transition: width 0.5s; }
+  .cov-r { background: linear-gradient(90deg, #f0aba4, #e8847a); flex: 1; }
+  .cov-legend { display: flex; justify-content: space-between; margin-top: 8px; font-family: var(--mono); font-size: 11px; color: var(--text-muted); flex-wrap: wrap; gap: 4px; }
+
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; padding: 14px 0; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
+
+  .footer { margin-top: 28px; font-family: var(--mono); font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 0.05em; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  @media print { .controls, .phase-nav { display: none; } .panel { display: block !important; } }
+</style>
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+const P = [
+  { num:1, name:"Concept & Governance", fplc:"H1/S1", color:"#6b7280", sop:"Pre-Entry Input Gate",
+    steps:[
+      { name:"Product Definition & Feasibility", desc:"One-Pager / PDD approved, problem statement, target users, HW/SW feasibility confirmed, budget & resource approval.",
+        ex:[], rq:[
+          {n:"Product One-Pager / PDD",s:"m"},{n:"Initial Risk Assessment",s:"m"},{n:"Budget & Resource Approval Record",s:"m"},
+          {n:"HW Feasibility Confirmation",s:"m"},{n:"SW Feasibility & Architecture Concept",s:"i"}
+        ]},
+      { name:"PM Assignment & Project Plan", desc:"Project manager assigned, project plan initiated, IMS created and baselined.",
+        ex:[{n:"IMS v3.0 (PCB Hardware Engineering)",s:"e"}],
+        rq:[{n:"Project Plan / Charter",s:"m"},{n:"Pre-Entry Input Gate Checklist (signed)",s:"m"}]},
+      { name:"PoC Engagement (if applicable)", desc:"Customer-facing proof of concept — S0 Kickoff through S7 Exit Brief. SOP exists but all 7 referenced templates are missing.",
+        ex:[{n:"SOP-POC-OPS-001 (PoC Board Operations)",s:"e"}],
+        rq:[
+          {n:"Kickoff Meeting PPT Template (S0)",s:"m"},{n:"Solution Session Questionnaire (S1)",s:"m"},
+          {n:"PoC Objectives & Metrics Template (S2)",s:"m"},{n:"Risk Registry Template (S2)",s:"m"},
+          {n:"PoC Agreement Template (S3)",s:"m"},{n:"Travel Kit & Deployment Guide (S4)",s:"m"},
+          {n:"Exit Brief PPT Template (S7)",s:"m"}
+        ]}
+    ]},
+  { num:2, name:"Hardware Design", fplc:"H2/S2", color:"#4a90d9", sop:"Phase 1 (PDR) + Phase 2 (CDR)",
+    steps:[
+      { name:"Requirements Definition (PDR)", desc:"Gather SW/ME interface requirements, document electrical requirements, compile Design Input Record, stakeholder buy-off.",
+        ex:[], rq:[{n:"Design Input Record (DIR)",s:"m",iso:"ISO 8.3.3"},{n:"Requirements Sign-off Record",s:"m"}]},
+      { name:"Reference Design & Risk Planning", desc:"Evaluate reference designs, document reuse decisions, identify HW/integration risks, create Risk Register.",
+        ex:[], rq:[{n:"Reference Design Decision Log",s:"m"},{n:"Risk Register",s:"m"}]},
+      { name:"Parts ID & Preliminary BOM", desc:"Candidate parts, availability/lead times from Supply Chain, library parts confirmation.",
+        ex:[], rq:[{n:"Preliminary BOM",s:"m"},{n:"Parts Availability Report",s:"m"}]},
+      { name:"Prototyping, Simulation & DFMA", desc:"Breadboard/test-fixture prototyping, SPICE simulation, ME board dimensions, MFG DFM review, SW interface buy-off.",
+        ex:[], rq:[{n:"Simulation / Prototype Report",s:"m"},{n:"DFMA Review Records",s:"m"}]},
+      { name:"Configuration Management Setup", desc:"Board part number, vault structure, access control, QA/QC review.",
+        ex:[{n:"Hardware Document Control SOP (File Naming, Rev E)",s:"e"}],
+        rq:[{n:"CM Vault Setup Confirmation",s:"m"},{n:"Phase 1 Entry Checklist (signed)",s:"m"}]},
+      { name:"PDR Gate Review", desc:"Compile PDR package, stakeholder meeting, close action items, formal buy-off.",
+        ex:[], rq:[{n:"PDR Presentation Package",s:"m"},{n:"PDR Stakeholder Sign-off Record",s:"m"}]},
+      { name:"Schematic & PCB Layout (CDR)", desc:"Altium schematic capture, ERC validation, PCB layout, DRC, STEP fit-check, peer reviews, manufacturing outputs.",
+        ex:[], rq:[
+          {n:"ERC-Clean Schematic PDF",s:"m"},{n:"DRC-Clean PCB Layout Files",s:"m"},
+          {n:"Peer Review Records (Schematic + Layout)",s:"m"},{n:"Full Manufacturing Output Package",s:"m"},
+          {n:"Board House Feedback Response",s:"m"}
+        ]},
+      { name:"CDR Gate Review & Design Lock", desc:"CDR package, formal review, RTM, line-by-line sign-off, vault lock.",
+        ex:[], rq:[
+          {n:"Requirements Traceability Matrix (RTM)",s:"m",iso:"ISO 8.3.5"},
+          {n:"CDR Presentation Package",s:"m"},{n:"CDR Stakeholder Sign-off Record",s:"m"},
+          {n:"Phase 2 Entry Checklist (signed)",s:"m"},{n:"Final BOM (Rev A)",s:"m"}
+        ]}
+    ]},
+  { num:3, name:"Software Development", fplc:"H2–H3", color:"#7c5cbf", sop:"No SOP exists — entire phase undocumented",
+    steps:[
+      { name:"SW Requirements & Architecture", desc:"Software requirements spec, system architecture, HW/SW interface control. Zero documentation exists.",
+        ex:[], rq:[
+          {n:"Software Requirements Specification (SRS)",s:"i"},{n:"Software Architecture Document (SAD)",s:"i"},
+          {n:"Interface Control Document (ICD) — HW/SW",s:"i"},{n:"SW Development Plan",s:"i"}
+        ]},
+      { name:"BSP & Platform Development", desc:"Board Support Package — bootloader (u-boot), Linux kernel, root filesystem. Work is done but completely undocumented.",
+        ex:[], rq:[
+          {n:"BSP Configuration & Build Record",s:"i"},{n:"Kernel Configuration Documentation",s:"i"},
+          {n:"Platform Verification Test Report",s:"i"}
+        ]},
+      { name:"Firmware Development", desc:"Embedded firmware for QSPI flash, processor-specific images. Programming instructions exist but no version control or release process.",
+        ex:[{n:"Firmware Programming Instructions",s:"e"}],
+        rq:[
+          {n:"Firmware Requirements Document",s:"i"},{n:"Firmware Version Control / Release SOP",s:"i"},
+          {n:"Firmware Build & Configuration Record",s:"i"},{n:"Firmware Change Log",s:"i"}
+        ]},
+      { name:"Application Software", desc:"Isidore application-layer software — encryption, communication, security functions. Entirely undocumented.",
+        ex:[], rq:[
+          {n:"Application SW Design Document",s:"i"},{n:"Encryption / COMSEC Implementation Record",s:"i"},
+          {n:"Application SW Test Plan",s:"i"}
+        ]},
+      { name:"SW Build System & CI/CD", desc:"Automated build pipeline, git LFS for image assets, reproducible builds. Referenced in IMS but no documentation.",
+        ex:[], rq:[
+          {n:"SW Build Automation SOP",s:"i"},{n:"Build Environment Configuration Record",s:"i"},
+          {n:"Git / Version Control SOP (SW)",s:"i"}
+        ]},
+      { name:"SW Testing & Verification", desc:"Unit testing, integration testing, regression test suite, manual testing on target hardware variants.",
+        ex:[], rq:[
+          {n:"SW Test Plan (Unit, Integration, Regression)",s:"i"},{n:"Regression Test Suite Documentation",s:"i"},
+          {n:"SW Test Execution Records",s:"i"},{n:"Defect Tracking Log (SW)",s:"i"}
+        ]},
+      { name:"SW Release & Configuration Mgmt", desc:"Software release process, version numbering, release notes, vault/archive.",
+        ex:[], rq:[
+          {n:"SW Release SOP",s:"i"},{n:"SW Release Notes Template",s:"i"},{n:"SW Configuration Management Plan",s:"i"}
+        ]}
+    ]},
+  { num:4, name:"Build & Integration", fplc:"H3/S3", color:"#2e9e6b", sop:"Phase 3 — Pilot Build & Test",
+    steps:[
+      { name:"Pilot Fabrication Order", desc:"Submit locked Gerbers, confirm build specs/BOM, receive pilot boards (10–20 units).",
+        ex:[], rq:[{n:"Pilot Fabrication Order Confirmation",s:"m"}]},
+      { name:"Board Bring-up & HW Testing", desc:"Power-on / voltage rail validation, processor boot, functional circuit validation, defect documentation.",
+        ex:[], rq:[{n:"Board Bring-up Test Report",s:"m"},{n:"ECN Register (Pilot)",s:"m"}]},
+      { name:"Firmware Programming & Flash", desc:"QSPI flash via REVELPROG-IS, SD card creation, MAC address assignment, boot validation.",
+        ex:[{n:"Firmware Programming Instructions",s:"e"}],
+        rq:[{n:"Firmware Version / Image Traceability Record",s:"m"}]},
+      { name:"HW + SW Integration", desc:"New images per board HW, git LFS update, BSP verification, new SW build, regression & integration testing, manual HW testing.",
+        ex:[], rq:[{n:"SW Integration Test Report",s:"m"},{n:"HW/SW Integration Verification Checklist",s:"i"}]},
+      { name:"QA / QC Inspection", desc:"100% pilot inspection, defect log with severity, formal disposition (Pass / Rework / Reject).",
+        ex:[], rq:[{n:"QA Inspection Records & Defect Log",s:"m"},{n:"Pilot Unit Disposition Record",s:"m"}]},
+      { name:"Rework & Re-Validation", desc:"ECN-driven rework on failed units, re-test to full acceptance criteria.",
+        ex:[], rq:[{n:"Rework Records & Re-test Results",s:"m"},{n:"Phase 3 Entry Checklist (signed)",s:"m"}]}
+    ]},
+  { num:5, name:"Verification & Validation", fplc:"H4/S4", color:"#d4880f", sop:"CAT + Environmental + Pre-Demo",
+    steps:[
+      { name:"Customer Acceptance Testing (CAT)", desc:"Confirm acceptance criteria with customer, execute testing, ATR with RTM references.",
+        ex:[], rq:[
+          {n:"CAT Test Plan",s:"m"},{n:"Acceptance Test Report (ATR)",s:"m",iso:"ISO 8.3.6"},
+          {n:"Customer Sign-off on ATR",s:"m"}
+        ]},
+      { name:"Environmental & Stress Testing", desc:"Temperature, humidity, vibration, shock — validate product operates within environmental envelope. No records exist.",
+        ex:[], rq:[
+          {n:"Environmental Test Plan & Acceptance Criteria",s:"i"},{n:"Environmental Test Report",s:"i"},
+          {n:"Operating Environment Specification",s:"i"}
+        ]},
+      { name:"Pre-Demo / Pre-Ship Verification", desc:"Functional verification that each unit works before any customer demo or shipment. No logs exist.", call:true,
+        ex:[], rq:[
+          {n:"Pre-Demo / Pre-Ship Functional Test Procedure",s:"i"},
+          {n:"Pre-Demo / Pre-Ship Test Log (per unit)",s:"i"},
+          {n:"Go / No-Go Checklist for Demos",s:"i"}
+        ]},
+      { name:"Security & COMSEC Validation", desc:"Encryption verification, COMSEC compliance, FIPS 140-3 readiness.",
+        ex:[], rq:[{n:"Security / COMSEC Validation Report",s:"i"},{n:"FIPS 140-3 Compliance Checklist",s:"i"}]}
+    ]},
+  { num:6, name:"Storage & Handling", fplc:"Cross-cutting", color:"#1a8a7a", sop:"No SOP exists — entirely undocumented",
+    steps:[
+      { name:"Product Storage Environment", desc:"Temperature-controlled and humidity-controlled storage for finished units, WIP, and raw materials. No documentation on whether controls are in place.",
+        ex:[], rq:[
+          {n:"Storage Environment Specification (temp, humidity, ESD)",s:"i"},
+          {n:"Environmental Monitoring Log (storage area)",s:"i"},
+          {n:"Calibration Records for Monitoring Equipment",s:"i"}
+        ]},
+      { name:"Inventory & Serialization", desc:"Which units exist, where they are, their status, serial numbers, firmware/SW version loaded.",
+        ex:[], rq:[
+          {n:"Product Inventory Register",s:"i"},{n:"Unit Serialization & Traceability Record",s:"i"},
+          {n:"Firmware / SW Version per Unit Log",s:"i"}
+        ]},
+      { name:"Handling, Packaging & Shipping", desc:"ESD handling, packaging standards, shipping documentation. Critical for defense hardware.",
+        ex:[], rq:[
+          {n:"Handling & ESD Protection SOP",s:"i"},{n:"Packaging & Shipping Procedure",s:"i"},
+          {n:"Chain of Custody / Shipping Log",s:"i"}
+        ]},
+      { name:"Preservation of Product", desc:"ISO 9001 Clause 8.5.4 — ensuring product conformity is preserved during internal processing and delivery.",
+        ex:[], rq:[{n:"Product Preservation Procedure",s:"i",iso:"ISO 8.5.4"}]}
+    ]},
+  { num:7, name:"Production & Release", fplc:"H5/S5", color:"#4a90d9", sop:"Phase 4 — Release",
+    steps:[
+      { name:"ECN Processing & Final Package", desc:"Formal ECNs for all changes, complete Altium archive, final BOM, full mfg output, CM vault lock.",
+        ex:[], rq:[
+          {n:"Approved ECN Package",s:"m"},{n:"ECN Template / Form",s:"m"},
+          {n:"Complete Altium Project Archive (Rev A)",s:"m"},{n:"Final BOM Rev A",s:"m"},
+          {n:"Full Mfg Output Package Rev A",s:"m"}
+        ]},
+      { name:"Release Notes & Gate Review", desc:"HW & SW release notes, RTM completeness, release gate review, vault lock.",
+        ex:[], rq:[
+          {n:"HW Release Notes",s:"m"},{n:"SW Release Notes",s:"i"},
+          {n:"RTM — Complete with Verification Evidence",s:"m",iso:"ISO 8.3.5/8.3.6"},
+          {n:"Release Gate Review Record",s:"m"},{n:"CM Vault Lock Confirmation",s:"m"},
+          {n:"Phase 4 Entry Checklist (signed)",s:"m"}
+        ]},
+      { name:"Production Handoff", desc:"Transfer to Production/Maintenance, handoff briefing, project archive per retention schedule.",
+        ex:[], rq:[{n:"Production Handoff Briefing Record",s:"m"},{n:"Project Archive Record",s:"m"}]}
+    ]},
+  { num:8, name:"Customer & Post-Delivery", fplc:"Post-release", color:"#c0392b", sop:"No SOP exists — entirely undocumented",
+    steps:[
+      { name:"Customer Delivery & Installation", desc:"Formal delivery documentation, installation verification, customer training records.",
+        ex:[], rq:[
+          {n:"Delivery / Shipment Record",s:"i"},{n:"Installation Verification Checklist",s:"i"},
+          {n:"Customer Training Record",s:"i"}
+        ]},
+      { name:"Post-Delivery Product Verification", desc:"Verifying the product is actually working for the customer once it leaves FEAI. No process exists.", call:true,
+        ex:[], rq:[
+          {n:"Post-Delivery Verification Procedure",s:"i"},{n:"Field Performance Monitoring Log",s:"i"},
+          {n:"Remote Diagnostic / Health Check SOP",s:"i"}
+        ]},
+      { name:"Customer Satisfaction", desc:"Formal customer feedback, satisfaction measurement, complaint tracking. Required by ISO 9001 Clause 9.1.2.",
+        ex:[], rq:[
+          {n:"Customer Satisfaction Survey / Feedback Form",s:"i",iso:"ISO 9.1.2"},
+          {n:"Customer Complaint Tracking Log",s:"i"},
+          {n:"Customer Satisfaction Analysis Report",s:"i"}
+        ]},
+      { name:"Warranty, RMA & Field Support", desc:"Return material authorization, warranty terms, field service records, corrective actions from field failures.",
+        ex:[], rq:[
+          {n:"Warranty Policy Document",s:"i"},{n:"RMA Procedure & Tracking Log",s:"i"},
+          {n:"Field Failure Analysis & CAPA Records",s:"i"}
+        ]},
+      { name:"Document Retrieval & Accessibility", desc:"CEO was interrupted during an investor pitch because a team member couldn't locate required files and nobody was responding. No self-service retrieval or escalation protocol exists.", call:true,
+        ex:[], rq:[
+          {n:"Document Retrieval / Self-Service Access Procedure",s:"i",tag:"call"},
+          {n:"File Request & Escalation Protocol",s:"i",tag:"call"},
+          {n:"Critical File Index (demos, investor decks, deliverables)",s:"i",tag:"call"}
+        ]}
+    ]}
+];
+
+const CC = [
+  {n:"PCB Hardware Development SOP",s:"e",note:"Governs full HW Phase 1–4 lifecycle. Draft v0.1."},
+  {n:"Hardware Document Control SOP",s:"e",note:"Part numbering (MMMMSIII), folder structure, revision control. Rev E."},
+  {n:"IMS v3.0 — PCB Hardware Engineering",s:"e",note:"Integrated Master Schedule. PDR through SW Board Integration."},
+  {n:"PoC Board Operations SOP",s:"e",note:"S0–S7 PoC lifecycle. Rev A draft."},
+  {n:"Firmware Programming Instructions",s:"e",note:"REVELPROG-IS procedure, SD card creation, MAC assignment."},
+  {n:"FPLC (Framework Product Life Cycle)",s:"r",note:"Referenced in PCB SOP — not provided as standalone document."},
+  {n:"SOP-HW-FNC-001 (File Naming Convention)",s:"r",note:"Referenced in PCB SOP Section 5 — not provided."},
+  {n:"Altium365 Version Control SOP",s:"r",note:"Referenced in Doc Control SOP Section 6 — not provided."},
+  {n:"ECN Template / Form",s:"m",note:"Referenced throughout PCB SOP — template not created."},
+  {n:"NCR Template / Form",s:"m",note:"Required by PCB SOP Section 14 — not created."},
+  {n:"DIR Template",s:"m",note:"Required at PDR per ISO 8.3.3 — not created."},
+  {n:"RTM Template",s:"m",note:"Required at CDR per ISO 8.3.5 — not created."},
+  {n:"Phase Entry Checklist Templates (1–4)",s:"m",note:"Defined in PCB SOP Section 12 — not created."}
+];
+
+const TI = [
+  {t:"<strong>File accessibility failure during investor pitch.</strong> CEO interrupted mid-fundraising — a team member couldn't get files for a deadline, nobody was responding. No self-service document retrieval, no escalation protocol.",p:"All / Post-Delivery"},
+  {t:"<strong>No two-person review completed on any documentation.</strong> Elena confirmed the required review-by-two was not executed on any aggregated documents. The review process exists on paper but is not being followed.",p:"All"},
+  {t:"<strong>Documentation accuracy unverified.</strong> Aggregated docs came from emails, chats, and Confluence posts of varying age — no verification of accuracy was performed. Informal documentation culture with no quality gate.",p:"All"},
+  {t:"<strong>Hardware-only meetings undocumented.</strong> Elena was excluded from HW-specific meetings and no notes exist from those sessions. Engineering decisions are being made without records.",p:"Hardware Design"},
+  {t:"<strong>Deployment lead has no backup coverage.</strong> Elesha flagged that when she travels things fall apart — no assistant, no handoff process. Byron directed to absorb program management load.",p:"Build / Customer Delivery"}
+];
+
+let S={ph:null,st:null,cc:false,gaps:false,tr:false};
+
+function cts(){let e=0,m=0,i=0,steps=0;P.forEach(p=>{steps+=p.steps.length;p.steps.forEach(s=>{e+=s.ex.length;s.rq.forEach(d=>{if(d.s==="m")m++;else if(d.s==="i")i++;else e++;});});});return{e,m,i,steps,total:e+m+i};}
+function gc(p){let g=0;p.steps.forEach(s=>s.rq.forEach(d=>{if(d.s!=="e")g++;}));return g;}
+function b(s){const m={e:"b-e",m:"b-m",r:"b-r",i:"b-i"},l={e:"EXISTS",m:"GAP",r:"REFERENCED",i:"INFERRED"};return'<span class="badge '+(m[s]||"b-m")+'">'+(l[s]||"GAP")+'</span>';}
+function iso(v){return v?'<span class="badge b-iso">'+v+'</span>':"";}
+function ctag(d){return d.tag==="call"?'<span class="badge b-call">FROM CALL</span>':"";}
+
+function render(){
+  const c=cts(),pct=Math.round((c.e/c.total)*100);
+  let h='';
+
+  h+='<div class="header-eyebrow">Forward Edge-AI &nbsp;·&nbsp; Isidore Quantum®</div>';
+  h+='<h1>Full Product Lifecycle Process Map</h1>';
+  h+='<p class="subtitle">End-to-end lifecycle from concept through post-delivery — hardware, software, storage, verification, and customer satisfaction. Document coverage overlay with gap analysis sourced from existing SOPs, inferred requirements, and leadership call insights.</p>';
+
+  h+='<div class="stats">';
+  h+='<div class="stat-card"><div class="stat-label">Process Steps</div><div class="stat-value" style="color:var(--text-secondary)">'+c.steps+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">Documented</div><div class="stat-value" style="color:var(--green)">'+c.e+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">Known Gaps</div><div class="stat-value" style="color:var(--red)">'+c.m+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">Inferred Gaps</div><div class="stat-value" style="color:var(--purple)">'+c.i+'</div></div>';
+  h+='<div class="stat-card"><div class="stat-label">Coverage</div><div class="stat-value" style="color:var(--text-secondary)">'+pct+'%</div></div>';
+  h+='</div>';
+
+  h+='<div class="controls">';
+  h+='<button class="ctrl-btn '+(S.tr?'a-amber':'')+'" onclick="tog(\'tr\')">'+(S.tr?'▾':'▸')+' Leadership Call Insights ('+TI.length+')</button>';
+  h+='<button class="ctrl-btn '+(S.cc?'a-blue':'')+'" onclick="tog(\'cc\')">'+(S.cc?'▾':'▸')+' Cross-Cutting Documents ('+CC.length+')</button>';
+  h+='<button class="ctrl-btn '+(S.gaps?'a-red':'')+'" onclick="tog(\'gaps\')">'+(S.gaps?'✕ Clear Filter':'⚑ Show Gaps Only')+'</button>';
+  h+='</div>';
+
+  // Transcript
+  h+='<div class="panel amber '+(S.tr?'open':'')+'"><div class="panel-title amber">Gaps Identified from Leadership Call Transcript</div>';
+  TI.forEach((t,i)=>{h+='<div class="t-item"><div class="t-icon">'+(i+1)+'</div><div class="t-text">'+t.t+' <span style="font-size:11px;color:#b8860b">('+t.p+')</span></div></div>';});
+  h+='</div>';
+
+  // CC
+  h+='<div class="panel '+(S.cc?'open':'')+'"><div class="panel-title blue">Cross-Cutting Documents & References</div>';
+  CC.forEach(d=>{h+='<div class="cc-row"><div style="flex-shrink:0;padding-top:2px">'+b(d.s)+'</div><div><div class="cc-name">'+d.n+'</div><div class="cc-note">'+d.note+'</div></div></div>';});
+  h+='</div>';
+
+  // Phase nav
+  h+='<div class="phase-nav">';
+  P.forEach((p,pi)=>{const g=gc(p),a=S.ph===pi;
+    h+='<div class="ptab '+(a?'active':'')+'" style="'+(a?'border-bottom-color:'+p.color:'')+'" onclick="tp('+pi+')">';
+    h+='<div class="tn" style="'+(a?'background:'+p.color+';color:#fff':'border:2px solid '+p.color+';color:'+p.color)+'">'+p.num+'</div>';
+    h+='<div class="tl">'+p.name+'</div>';
+    if(g>0) h+='<div class="tg">'+g+'</div>';
+    h+='</div>';});
+  h+='</div>';
+
+  // Cards
+  P.forEach((p,pi)=>{
+    if(S.ph!==null&&S.ph!==pi) return;
+    const op=S.ph===pi,g=gc(p);
+    h+='<div class="pcard"><div class="ph" onclick="tp('+pi+')"><div style="display:flex;align-items:center">';
+    h+='<div class="pnum" style="background:'+p.color+'14;color:'+p.color+';border:2px solid '+p.color+'">'+p.num+'</div>';
+    h+='<div><div class="ptitle">'+p.name+'</div>';
+    h+='<div class="psub">'+p.sop+' · '+p.steps.length+' step'+(p.steps.length>1?'s':'');
+    if(g>0) h+=' · <span style="color:var(--red)">'+g+' gap'+(g>1?'s':'')+'</span>';
+    h+='</div></div></div><span class="pchev">'+(op?'▾':'▸')+'</span></div>';
+
+    if(op){p.steps.forEach((step,si)=>{
+      const key=pi+'-'+si,so=S.st===key;
+      const gc2=step.rq.filter(d=>d.s!=="e").length;
+      const ec=step.ex.length+step.rq.filter(d=>d.s==="e").length;
+      const all=[...step.ex,...step.rq];
+      const show=S.gaps?all.filter(d=>d.s!=="e"):all;
+      if(S.gaps&&show.length===0) return;
+
+      h+='<div class="sr"><div class="sh" onclick="ts(\''+key+'\')">';
+      h+='<div style="display:flex;align-items:center;gap:6px;min-width:0"><span class="sn">'+(si+1)+'.</span><span class="sl">'+step.name+'</span>';
+      if(step.call) h+=' <span class="badge b-call" style="font-size:8px">CALL</span>';
+      h+='</div><div class="sm">';
+      if(ec>0) h+='<span class="sc" style="color:var(--green)">'+ec+'</span>';
+      if(gc2>0) h+='<span class="sc" style="color:var(--red)">'+gc2+'</span>';
+      h+='<span class="st">'+(so?'−':'+')+'</span></div></div>';
+
+      if(so){
+        h+='<div class="sd"><div class="sdesc">'+step.desc+'</div>';
+        show.forEach(d=>{h+='<div class="dr">'+b(d.s)+'<span class="dn">'+d.n+'</span>'+iso(d.iso||'')+ctag(d)+'</div>';});
+        h+='</div>';}
+      h+='</div>';
+    });}
+    h+='</div>';
+  });
+
+  // Legend
+  h+='<div class="legend">';
+  h+='<div class="legend-item"><span class="badge b-e" style="font-size:8px">EXISTS</span> Provided</div>';
+  h+='<div class="legend-item"><span class="badge b-m" style="font-size:8px">GAP</span> Required by SOP</div>';
+  h+='<div class="legend-item"><span class="badge b-i" style="font-size:8px">INFERRED</span> No SOP — gap inferred</div>';
+  h+='<div class="legend-item"><span class="badge b-r" style="font-size:8px">REFERENCED</span> Cited, not provided</div>';
+  h+='<div class="legend-item"><span class="badge b-call" style="font-size:8px">FROM CALL</span> Leadership call</div>';
+  h+='</div>';
+
+  // Coverage
+  h+='<div class="cov"><div class="cov-label">Documentation Coverage</div>';
+  h+='<div class="cov-track"><div class="cov-g" style="width:'+pct+'%"></div><div class="cov-r"></div></div>';
+  h+='<div class="cov-legend"><span><span style="color:var(--green)">■</span> '+c.e+' documented ('+pct+'%)</span>';
+  h+='<span><span style="color:var(--red)">■</span> '+c.m+' known gaps &nbsp;<span style="color:var(--purple)">■</span> '+c.i+' inferred gaps ('+(100-pct)+'%)</span></div></div>';
+
+  h+='<div class="footer">FEAI Quality Control · Isidore Quantum® Full Product Lifecycle · '+new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})+'</div>';
+
+  document.getElementById('app').innerHTML=h;
+}
+
+function tp(i){S.ph=S.ph===i?null:i;S.st=null;render();}
+function ts(k){S.st=S.st===k?null:k;render();}
+function tog(k){S[k]=!S[k];render();}
+render();
+</script>
+</body>
+</html>
