@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEAI Project Site Taxonomy & Naming Convention</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FFFFFF;
+  --bg-card: #FAFAFA;
+  --bg-card-hover: #F3F3F5;
+  --bg-surface: #F0F0F3;
+  --border: #E0E0E5;
+  --border-hover: #CCCCDD;
+  --text-primary: #1A1A2E;
+  --text-secondary: #5C5C6E;
+  --text-tertiary: #8E8E9A;
+  --purple: #6B5FBF;
+  --purple-dim: #534AB7;
+  --purple-bg: rgba(107, 95, 191, 0.07);
+  --teal: #0F6E56;
+  --teal-dim: #085041;
+  --teal-bg: rgba(15, 110, 86, 0.06);
+  --coral: #993C1D;
+  --coral-dim: #712B13;
+  --coral-bg: rgba(153, 60, 29, 0.06);
+  --amber: #854F0B;
+  --amber-dim: #633806;
+  --amber-bg: rgba(133, 79, 11, 0.06);
+  --blue: #185FA5;
+  --blue-dim: #0C447C;
+  --blue-bg: rgba(24, 95, 165, 0.06);
+  --green: #3B6D11;
+  --green-dim: #27500A;
+  --green-bg: rgba(59, 109, 17, 0.06);
+  --red: #A32D2D;
+  --red-dim: #791F1F;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Header */
+.header {
+  margin-bottom: 48px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.header h1 span { color: var(--purple); }
+
+.header p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 640px;
+}
+
+/* Section headers */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 16px;
+}
+
+/* Metadata columns section */
+.columns-section {
+  margin-bottom: 56px;
+}
+
+.columns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.col-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+
+.col-card:hover { border-color: var(--border-hover); }
+
+.col-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.col-indicator {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+}
+
+.col-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.col-card .subtitle {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.col-card .description {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.tag:hover { transform: translateY(-1px); }
+
+.tag-purple { background: var(--purple-bg); color: var(--purple); border-color: rgba(107,95,191,0.15); }
+.tag-purple:hover { border-color: var(--purple); }
+.tag-teal { background: var(--teal-bg); color: var(--teal); border-color: rgba(15,110,86,0.15); }
+.tag-teal:hover { border-color: var(--teal); }
+.tag-coral { background: var(--coral-bg); color: var(--coral); border-color: rgba(153,60,29,0.15); }
+.tag-coral:hover { border-color: var(--coral); }
+.tag-amber { background: var(--amber-bg); color: var(--amber); border-color: rgba(133,79,11,0.15); }
+.tag-amber:hover { border-color: var(--amber); }
+.tag-blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(24,95,165,0.15); }
+.tag-blue:hover { border-color: var(--blue); }
+.tag-green { background: var(--green-bg); color: var(--green); border-color: rgba(59,109,17,0.15); }
+.tag-green:hover { border-color: var(--green); }
+
+.tag.active {
+  transform: translateY(-1px);
+}
+.tag-purple.active { border-color: var(--purple); background: rgba(107,95,191,0.14); }
+.tag-teal.active { border-color: var(--teal); background: rgba(15,110,86,0.12); }
+.tag-coral.active { border-color: var(--coral); background: rgba(153,60,29,0.12); }
+
+/* Versus callout */
+.versus-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+
+.versus-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.versus-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.versus-card p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.versus-divider {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.qms-label { color: var(--purple); }
+.proj-label { color: var(--coral); }
+
+/* Naming convention section */
+.naming-section { margin-bottom: 56px; }
+
+.naming-builder {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.formula-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.formula-segment {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.formula-segment:hover { transform: translateY(-2px); }
+.seg-product { background: var(--coral-bg); color: var(--coral); border-color: rgba(153,60,29,0.15); }
+.seg-phase { background: var(--purple-bg); color: var(--purple); border-color: rgba(107,95,191,0.15); }
+.seg-artifact { background: var(--teal-bg); color: var(--teal); border-color: rgba(15,110,86,0.15); }
+.seg-desc { background: var(--blue-bg); color: var(--blue); border-color: rgba(24,95,165,0.15); }
+.seg-version { background: var(--amber-bg); color: var(--amber); border-color: rgba(133,79,11,0.15); }
+
+.formula-sep {
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Builder controls */
+.builder-controls {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.control-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+
+.control-group select {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238E8E9A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.control-group select:focus {
+  outline: none;
+  border-color: var(--purple-dim);
+}
+
+.control-group input {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+}
+
+.control-group input:focus {
+  outline: none;
+  border-color: var(--blue-dim);
+}
+
+/* Output */
+.output-row {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.output-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.output-filename .p { color: var(--coral); }
+.output-filename .ph { color: var(--purple); }
+.output-filename .a { color: var(--teal); }
+.output-filename .d { color: var(--blue); }
+.output-filename .v { color: var(--amber); }
+.output-filename .sep { color: var(--text-tertiary); }
+
+.copy-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+/* Library simulation */
+.library-section { margin-bottom: 56px; }
+
+.library-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.filter-btn.active { background: var(--purple-bg); border-color: var(--purple-dim); color: var(--purple); }
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-right: 4px;
+}
+
+.library-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.library-table thead th {
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+
+.library-table tbody tr {
+  transition: background 0.1s;
+}
+
+.library-table tbody tr:hover { background: var(--bg-card-hover); }
+
+.library-table tbody tr.hidden { display: none; }
+
+.library-table tbody td {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(224,224,229,0.6);
+}
+
+.library-table tbody tr:last-child td { border-bottom: none; }
+
+.filename-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.mini-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.mt-concept { background: rgba(107,95,191,0.1); color: var(--purple); }
+.mt-design { background: rgba(24,95,165,0.1); color: var(--blue); }
+.mt-build { background: rgba(15,110,86,0.1); color: var(--teal); }
+.mt-test { background: rgba(133,79,11,0.1); color: var(--amber); }
+.mt-release { background: rgba(59,109,17,0.1); color: var(--green); }
+.mt-sustain { background: rgba(107,95,191,0.06); color: var(--purple-dim); }
+
+.mt-draft { background: rgba(133,79,11,0.1); color: var(--amber); }
+.mt-review { background: rgba(24,95,165,0.1); color: var(--blue); }
+.mt-current { background: rgba(59,109,17,0.1); color: var(--green); }
+.mt-promoted { background: rgba(107,95,191,0.12); color: var(--purple); }
+.mt-superseded { background: rgba(142,142,154,0.12); color: var(--text-tertiary); }
+
+.result-count {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-left: auto;
+  font-weight: 500;
+}
+
+/* Promoted callout */
+.promoted-callout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 20px;
+  background: var(--purple-bg);
+  border: 1px solid rgba(107,95,191,0.15);
+  border-radius: 10px;
+}
+
+.promoted-callout .icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.promoted-callout p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.promoted-callout strong { color: var(--purple); font-weight: 600; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .columns-grid { grid-template-columns: 1fr; }
+  .builder-controls { grid-template-columns: 1fr 1fr; }
+  .versus-row { grid-template-columns: 1fr; }
+  .versus-divider { text-align: center; }
+  .formula-row { gap: 4px; }
+  .formula-segment { padding: 6px 10px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Project site taxonomy <span>&</span> naming convention</h1>
+    <p>Metadata-driven navigation for FEAI project sites. No folders. Tags and naming conventions replace the drill-down.</p>
+  </div>
+
+  <!-- Metadata Columns -->
+  <div class="columns-section">
+    <div class="section-label">Three metadata columns per project library</div>
+    <div class="columns-grid">
+
+      <div class="col-card">
+        <div class="col-card-header">
+          <div class="col-indicator" style="background: var(--purple);"></div>
+          <div>
+            <h3>Work phase</h3>
+            <div class="subtitle">Where in the lifecycle</div>
+          </div>
+        </div>
+        <div class="description">Maps to the four-gate D&D framework. Tells you what stage of product development the artifact belongs to.</div>
+        <div class="tag-list">
+          <span class="tag tag-purple">Concept</span>
+          <span class="tag tag-purple">Design</span>
+          <span class="tag tag-purple">Build</span>
+          <span class="tag tag-purple">Test / Validate</span>
+          <span class="tag tag-purple">Release</span>
+          <span class="tag tag-purple">Sustain</span>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-card-header">
+          <div class="col-indicator" style="background: var(--teal);"></div>
+          <div>
+            <h3>Artifact type</h3>
+            <div class="subtitle">What kind of working document</div>
+          </div>
+        </div>
+        <div class="description">Describes what the file actually is in the working context — deliberately different from QMS document types.</div>
+        <div class="tag-list">
+          <span class="tag tag-teal">Meeting notes</span>
+          <span class="tag tag-teal">Engineering spec</span>
+          <span class="tag tag-teal">Test data</span>
+          <span class="tag tag-teal">Presentation</span>
+          <span class="tag tag-teal">Correspondence</span>
+          <span class="tag tag-teal">Analysis</span>
+          <span class="tag tag-teal">Reference</span>
+          <span class="tag tag-teal">PoC artifact</span>
+        </div>
+      </div>
+
+      <div class="col-card">
+        <div class="col-card-header">
+          <div class="col-indicator" style="background: var(--coral);"></div>
+          <div>
+            <h3>Work status</h3>
+            <div class="subtitle">Where the artifact stands</div>
+          </div>
+        </div>
+        <div class="description">Tracks the artifact's own lifecycle, not document control state. "Promoted to QMS" closes the loop back to the controlled register.</div>
+        <div class="tag-list">
+          <span class="tag tag-coral">Draft</span>
+          <span class="tag tag-coral">In review</span>
+          <span class="tag tag-coral">Current</span>
+          <span class="tag tag-coral">Superseded</span>
+          <span class="tag tag-coral">Promoted to QMS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QMS vs Project distinction -->
+  <div class="versus-row">
+    <div class="versus-card">
+      <h4 class="qms-label">QMS document register</h4>
+      <p>Document Type: SOP, Template, Form, Record<br>
+         Status: Active, Archived<br>
+         Classification: Internal, Controlled, Restricted</p>
+    </div>
+    <div class="versus-divider">vs</div>
+    <div class="versus-card">
+      <h4 class="proj-label">Project site library</h4>
+      <p>Artifact Type: MtgNotes, EngSpec, TestData…<br>
+         Work Status: Draft, In Review, Current…<br>
+         Work Phase: Concept, Design, Build…</p>
+    </div>
+  </div>
+
+  <!-- Naming Convention Builder -->
+  <div class="naming-section">
+    <div class="section-label">Naming convention builder</div>
+    <div class="naming-builder">
+      <div class="formula-row">
+        <span class="formula-segment seg-product">Product</span>
+        <span class="formula-sep">-</span>
+        <span class="formula-segment seg-phase">Phase</span>
+        <span class="formula-sep">-</span>
+        <span class="formula-segment seg-artifact">ArtifactType</span>
+        <span class="formula-sep">-</span>
+        <span class="formula-segment seg-desc">ShortDescription</span>
+        <span class="formula-sep">_</span>
+        <span class="formula-segment seg-version">Version</span>
+      </div>
+
+      <div class="builder-controls">
+        <div class="control-group">
+          <label>Product</label>
+          <select id="sel-product" onchange="updateOutput()">
+            <option value="ISQ">ISQ — Isidore Quantum</option>
+            <option value="GAB">GAB — Gabriel</option>
+            <option value="BLA">BLA — Blaise</option>
+            <option value="SBQ">SBQ — SmartBeam-QRC</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Phase</label>
+          <select id="sel-phase" onchange="updateOutput()">
+            <option value="CON">CON — Concept</option>
+            <option value="DES">DES — Design</option>
+            <option value="BLD">BLD — Build</option>
+            <option value="TST">TST — Test/Validate</option>
+            <option value="REL">REL — Release</option>
+            <option value="SUS">SUS — Sustain</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Artifact type</label>
+          <select id="sel-artifact" onchange="updateOutput()">
+            <option value="MtgNotes">MtgNotes</option>
+            <option value="EngSpec">EngSpec</option>
+            <option value="TestData">TestData</option>
+            <option value="Pres">Pres</option>
+            <option value="Corr">Corr</option>
+            <option value="Analysis">Analysis</option>
+            <option value="Ref">Ref</option>
+            <option value="PoC">PoC</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Description</label>
+          <input type="text" id="inp-desc" value="ThermalCycling" oninput="updateOutput()" placeholder="ShortDescription">
+        </div>
+        <div class="control-group">
+          <label>Version</label>
+          <select id="sel-version" onchange="updateOutput()">
+            <option value="v1">v1</option>
+            <option value="v2">v2</option>
+            <option value="v3">v3</option>
+            <option value="v4">v4</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="output-row">
+        <span class="output-filename" id="output-name"></span>
+        <button class="copy-btn" onclick="copyFilename()">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Library Simulation -->
+  <div class="library-section">
+    <div class="section-label">Simulated library view — filter by phase</div>
+    <div class="library-toolbar">
+      <span class="filter-label">Phase:</span>
+      <button class="filter-btn active" data-phase="all" onclick="filterTable('all', this)">All</button>
+      <button class="filter-btn" data-phase="concept" onclick="filterTable('concept', this)">Concept</button>
+      <button class="filter-btn" data-phase="design" onclick="filterTable('design', this)">Design</button>
+      <button class="filter-btn" data-phase="build" onclick="filterTable('build', this)">Build</button>
+      <button class="filter-btn" data-phase="test" onclick="filterTable('test', this)">Test</button>
+      <button class="filter-btn" data-phase="release" onclick="filterTable('release', this)">Release</button>
+      <span class="result-count" id="result-count">Showing 10 files</span>
+    </div>
+    <table class="library-table">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Work phase</th>
+          <th>Artifact type</th>
+          <th>Work status</th>
+        </tr>
+      </thead>
+      <tbody id="library-body">
+      </tbody>
+    </table>
+
+    <div class="promoted-callout">
+      <svg class="icon" viewBox="0 0 20 20" fill="none">
+        <path d="M10 3L17 17H3L10 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" style="color: var(--purple);"/>
+      </svg>
+      <p>Files tagged <strong>Promoted to QMS</strong> have been submitted through the QC intake process and now exist as controlled documents in the QMS document register. The project site copy is retained as a working reference but is no longer the version of record.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const files = [
+  { name: 'ISQ-CON-MtgNotes-PoC-KickoffReview_v1', phase: 'concept', phaseLabel: 'Concept', phaseClass: 'mt-concept', type: 'Meeting notes', status: 'Current', statusClass: 'mt-current' },
+  { name: 'ISQ-CON-PoC-LifecycleFlowchart_v5', phase: 'concept', phaseLabel: 'Concept', phaseClass: 'mt-concept', type: 'PoC artifact', status: 'Current', statusClass: 'mt-current' },
+  { name: 'ISQ-CON-Analysis-RiskRegister_v2', phase: 'concept', phaseLabel: 'Concept', phaseClass: 'mt-concept', type: 'Analysis', status: 'Promoted to QMS', statusClass: 'mt-promoted' },
+  { name: 'ISQ-DES-EngSpec-EncryptionModule_v1', phase: 'design', phaseLabel: 'Design', phaseClass: 'mt-design', type: 'Engineering spec', status: 'Draft', statusClass: 'mt-draft' },
+  { name: 'ISQ-DES-EngSpec-BoardLayout-REVA_v3', phase: 'design', phaseLabel: 'Design', phaseClass: 'mt-design', type: 'Engineering spec', status: 'In review', statusClass: 'mt-review' },
+  { name: 'ISQ-DES-Ref-CCA-Rework-A2_v1', phase: 'design', phaseLabel: 'Design', phaseClass: 'mt-design', type: 'Reference', status: 'Current', statusClass: 'mt-current' },
+  { name: 'ISQ-BLD-MtgNotes-DailyScrum-0310_v1', phase: 'build', phaseLabel: 'Build', phaseClass: 'mt-build', type: 'Meeting notes', status: 'Current', statusClass: 'mt-current' },
+  { name: 'ISQ-TST-TestData-ThermalCycling_v2', phase: 'test', phaseLabel: 'Test / Validate', phaseClass: 'mt-test', type: 'Test data', status: 'Current', statusClass: 'mt-current' },
+  { name: 'ISQ-TST-Analysis-AnomalyDetection_v1', phase: 'test', phaseLabel: 'Test / Validate', phaseClass: 'mt-test', type: 'Analysis', status: 'Draft', statusClass: 'mt-draft' },
+  { name: 'ISQ-REL-Pres-ExitBrief-PoC_v1', phase: 'release', phaseLabel: 'Release', phaseClass: 'mt-release', type: 'Presentation', status: 'Promoted to QMS', statusClass: 'mt-promoted' },
+];
+
+function renderTable() {
+  const tbody = document.getElementById('library-body');
+  tbody.innerHTML = files.map(f => `
+    <tr data-phase="${f.phase}">
+      <td class="filename-cell">${f.name}</td>
+      <td><span class="mini-tag ${f.phaseClass}">${f.phaseLabel}</span></td>
+      <td style="color: var(--text-secondary); font-size: 13px;">${f.type}</td>
+      <td><span class="mini-tag ${f.statusClass}">${f.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+function filterTable(phase, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const rows = document.querySelectorAll('#library-body tr');
+  let count = 0;
+  rows.forEach(row => {
+    if (phase === 'all' || row.dataset.phase === phase) {
+      row.classList.remove('hidden');
+      count++;
+    } else {
+      row.classList.add('hidden');
+    }
+  });
+  document.getElementById('result-count').textContent = `Showing ${count} file${count !== 1 ? 's' : ''}`;
+}
+
+function updateOutput() {
+  const p = document.getElementById('sel-product').value;
+  const ph = document.getElementById('sel-phase').value;
+  const a = document.getElementById('sel-artifact').value;
+  const d = document.getElementById('inp-desc').value.replace(/\s+/g, '') || 'Description';
+  const v = document.getElementById('sel-version').value;
+  const el = document.getElementById('output-name');
+  el.innerHTML = `<span class="p">${p}</span><span class="sep">-</span><span class="ph">${ph}</span><span class="sep">-</span><span class="a">${a}</span><span class="sep">-</span><span class="d">${d}</span><span class="sep">_</span><span class="v">${v}</span>`;
+}
+
+function copyFilename() {
+  const el = document.getElementById('output-name');
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+renderTable();
+updateOutput();
+</script>
+</body>
+</html>
